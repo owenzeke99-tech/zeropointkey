@@ -1,0 +1,575 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroPoint Key System</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #ff2995;
+    --light: #ff9acb;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #09050a;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* BACKGROUND */
+.background {
+    position: fixed;
+    inset: -30%;
+    z-index: -5;
+    background:
+        radial-gradient(circle at 25% 30%, #45102e, transparent 35%),
+        radial-gradient(circle at 80% 75%, #360c29, transparent 38%),
+        #09050a;
+    animation: backgroundMove 14s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundMove {
+    from { transform: translate(-2%,-2%) scale(1); }
+    to { transform: translate(2%,2%) scale(1.1); }
+}
+
+/* LIGHT EFFECTS */
+.light {
+    position: fixed;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    filter: blur(95px);
+    opacity: .2;
+    z-index: -3;
+    pointer-events: none;
+}
+
+.light.one {
+    background: #ff168b;
+    top: -80px;
+    left: -80px;
+    animation: lightMove 9s infinite alternate;
+}
+
+.light.two {
+    background: #bd176e;
+    bottom: -80px;
+    right: -80px;
+    animation: lightMove 11s infinite alternate-reverse;
+}
+
+@keyframes lightMove {
+    to { transform: translate(120px,100px) scale(1.4); }
+}
+
+/* PARTICLES */
+#particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background: #ff72b9;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff2995;
+    animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(40px) scale(.3);
+        opacity: 0;
+    }
+    25% { opacity: .8; }
+    75% { opacity: .6; }
+    100% {
+        transform: translate(35px,-150px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* MAIN MENU */
+.card {
+    position: relative;
+    width: 90%;
+    max-width: 395px;
+    padding: 36px 27px;
+    text-align: center;
+    border-radius: 25px;
+    background: rgba(17,8,15,.95);
+    border: 1px solid rgba(255,80,165,.25);
+    box-shadow:
+        0 20px 80px rgba(0,0,0,.7),
+        0 0 40px rgba(255,35,145,.12);
+    animation: cardAppear .9s ease;
+    transition: box-shadow .4s;
+}
+
+.card:hover {
+    box-shadow:
+        0 20px 80px rgba(0,0,0,.7),
+        0 0 55px rgba(255,35,145,.22);
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(35px) scale(.94);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* STATIC FRAME WITH MOVING LIGHT */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    padding: 1.5px;
+    background: linear-gradient(
+        110deg,
+        transparent 5%,
+        #ff2995 25%,
+        #ffb4d9 45%,
+        #ff2995 65%,
+        transparent 90%
+    );
+    background-size: 250% 100%;
+    animation: borderGlow 5s ease-in-out infinite;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+@keyframes borderGlow {
+    0% {
+        background-position: 100% 50%;
+        opacity: .4;
+    }
+    50% {
+        background-position: 0% 50%;
+        opacity: 1;
+    }
+    100% {
+        background-position: 100% 50%;
+        opacity: .4;
+    }
+}
+
+/* LOGO Z */
+.logo {
+    position: relative;
+    width: 91px;
+    height: 91px;
+    margin: 0 auto 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    background: linear-gradient(145deg,#351025,#100710);
+    border: 1px solid rgba(255,100,180,.7);
+    box-shadow:
+        0 0 30px rgba(255,35,145,.2),
+        inset 0 0 25px rgba(255,35,145,.12);
+    animation: logoFloat 4s ease-in-out infinite;
+}
+
+.logo::before {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    border: 1px solid rgba(255,70,160,.4);
+    border-radius: 31px;
+    animation: logoPulse 3s ease-out infinite;
+}
+
+.logo::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(255,150,205,.2);
+    border-radius: 18px;
+}
+
+.logo span {
+    position: relative;
+    z-index: 1;
+    font-size: 62px;
+    font-weight: 1000;
+    font-style: normal;
+    line-height: 1;
+    background: linear-gradient(180deg,#fff,#ff9aca 55%,#ff2995);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 12px rgba(255,40,150,.65));
+}
+
+@keyframes logoFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+@keyframes logoPulse {
+    0% { transform: scale(.95); opacity: .8; }
+    100% { transform: scale(1.25); opacity: 0; }
+}
+
+/* TITLE */
+h1 {
+    font-size: 31px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg,#fff,#ff8bc5,#ff2995,#fff);
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleShine 5s linear infinite;
+}
+
+@keyframes titleShine {
+    to { background-position: 250% center; }
+}
+
+.subtitle {
+    margin-top: 9px;
+    color: #b18a9f;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+}
+
+/* STATUS */
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 8px 15px;
+    border-radius: 30px;
+    color: #ff8bc5;
+    background: rgba(255,40,145,.08);
+    border: 1px solid rgba(255,90,170,.3);
+    animation: statusGlow 3s ease-in-out infinite;
+    font-size: 11px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff399b;
+    box-shadow: 0 0 10px #ff2995;
+    animation: dotPulse 1.3s infinite;
+}
+
+@keyframes dotPulse {
+    50% { opacity: .3; transform: scale(.7); }
+}
+
+@keyframes statusGlow {
+    50% { box-shadow: 0 0 16px rgba(255,40,145,.15); }
+}
+
+/* KEY MENU */
+.key-label {
+    display: flex;
+    justify-content: space-between;
+    color: #e3a6c5;
+    font-size: 12px;
+    letter-spacing: 1.3px;
+    margin: 29px 0 10px;
+}
+
+.key-label span:last-child {
+    color: #ff65ad;
+    font-size: 10px;
+}
+
+/* KEY BORDER */
+.key-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 14px;
+    background: linear-gradient(
+        110deg,
+        #ff2995,
+        #ffb1d7,
+        #63143f,
+        #ff2995
+    );
+    background-size: 300% 100%;
+    animation: keyBorder 5s ease-in-out infinite;
+    transition: transform .35s, box-shadow .35s;
+}
+
+@keyframes keyBorder {
+    0% { background-position: 100% 50%; }
+    50% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.key-wrapper:hover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: 0 10px 30px rgba(255,40,145,.25);
+}
+
+/* KEY CONTENT */
+.key-box {
+    position: relative;
+    overflow: hidden;
+    padding: 17px 12px;
+    border-radius: 13px;
+    background: linear-gradient(120deg,#100910,#190b15,#100910);
+    background-size: 200% 200%;
+    color: #ffd7eb;
+    font-size: 12px;
+    line-height: 1.8;
+    word-break: break-all;
+    transition: .4s;
+    animation: keyBackground 6s ease infinite;
+}
+
+@keyframes keyBackground {
+    50% { background-position: 100% 50%; }
+}
+
+.key-box::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 45%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,120,190,.16),
+        transparent
+    );
+    transform: rotate(20deg);
+    animation: keySweep 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes keySweep {
+    0%,30% { left: -100%; }
+    75%,100% { left: 150%; }
+}
+
+.key-wrapper:hover .key-box {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,100,180,.3);
+}
+
+/* COPY BUTTON */
+.copy-btn {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 17px;
+    padding: 16px;
+    border: 1px solid rgba(255,190,220,.35);
+    border-radius: 12px;
+    color: white;
+    background: linear-gradient(110deg,#ef3692,#a91d62);
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1.8px;
+    cursor: pointer;
+    transition: .35s;
+}
+
+.copy-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    transform: skewX(-20deg);
+    animation: buttonSweep 4s ease-in-out infinite;
+}
+
+@keyframes buttonSweep {
+    0%,35% { left: -120%; }
+    70%,100% { left: 150%; }
+}
+
+.copy-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(255,40,145,.35);
+    background: linear-gradient(110deg,#ff65b0,#d1277d);
+}
+
+.copy-btn:active {
+    transform: scale(.96);
+}
+
+.footer {
+    margin-top: 25px;
+    color: #815b72;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%,20px);
+    padding: 13px 21px;
+    border-radius: 11px;
+    background: #25101d;
+    border: 1px solid #e44891;
+    color: white;
+    font-size: 13px;
+    opacity: 0;
+    transition: .3s;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 0 25px rgba(255,40,145,.2);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%,0);
+}
+
+@media(max-width:420px) {
+    .card { padding: 30px 22px; }
+    h1 { font-size: 28px; }
+    .logo { width: 84px; height: 84px; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="light one"></div>
+<div class="light two"></div>
+<div id="particles"></div>
+
+<div class="card">
+
+    <div class="logo">
+        <span>Z</span>
+    </div>
+
+    <h1>ZeroPoint</h1>
+    <p class="subtitle">PREMIUM KEY SYSTEM</p>
+
+    <div class="status">
+        <span class="dot"></span>
+        SYSTEM ONLINE
+    </div>
+
+    <div class="key-label">
+        <span>YOUR ACCESS KEY</span>
+        <span>● ACTIVE</span>
+    </div>
+
+    <div class="key-wrapper">
+        <div class="key-box" id="key">
+            ZeroPointHsjsKeyJakosjwowLappqiwhwJanwkiwejob
+        </div>
+    </div>
+
+    <button class="copy-btn" onclick="copyKey()">
+        COPY KEY
+    </button>
+
+    <div class="footer">
+        ZEROPOINT © 2026 • ALL RIGHTS RESERVED
+    </div>
+
+</div>
+
+<div class="toast" id="toast">
+    ✓ Key copied successfully!
+</div>
+
+<script>
+const particleArea = document.getElementById("particles");
+
+for(let i = 0; i < 75; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+
+    const size = Math.random() * 3 + 1;
+
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.top = Math.random() * 100 + "%";
+    p.style.animationDelay = Math.random() * 10 + "s";
+    p.style.animationDuration = (5 + Math.random() * 10) + "s";
+
+    particleArea.appendChild(p);
+}
+
+async function copyKey() {
+    const key = document.getElementById("key").innerText.trim();
+
+    try {
+        await navigator.clipboard.writeText(key);
+        showToast("✓ Key copied successfully!");
+    } catch(error) {
+        const input = document.createElement("textarea");
+        input.value = key;
+        document.body.appendChild(input);
+        input.select();
+        const copied = document.execCommand("copy");
+        input.remove();
+
+        showToast(copied
+            ? "✓ Key copied successfully!"
+            : "Unable to copy key!");
+    }
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2300);
+}
+</script>
+
+</body>
+</html>
